@@ -18,7 +18,7 @@ const reactionSchema = new Schema(
             type: Date,
             // set current date as the timestamp for the default value.
             default: Date.now,
-            get: (timestamp) => { formatDate(timestamp) }
+            get: (timestamp) => formatDate(timestamp)
         },
         username: {
             type: String,
@@ -29,6 +29,7 @@ const reactionSchema = new Schema(
         toJSON: {
             getters: true
         },
+        // Note: the _id field is still present in the database and can be used to query and update documents.
         id: false,
     }
 );
@@ -38,11 +39,7 @@ const reactionSchema = new Schema(
 //     .path('created_at')
 //     .get(function (created_at) {
 //         // Format the timestamp to a string representation
-//         return created_at.toLocaleDateString('en-US', {
-//             year: 'numeric',
-//             month: 'short',
-//             day: 'numeric'
-//         });
+//         return formatDate(created_at);
 //     });
 
 
@@ -58,7 +55,8 @@ const thoughtSchema = new Schema(
         created_at: {
             type: Date,
             // Format the timestamp to a string representation
-            default: Date.now
+            default: Date.now,
+            get: (timestamp) => formatDate(timestamp)
         },
         username: {
             type: String,
@@ -77,16 +75,16 @@ const thoughtSchema = new Schema(
 );
 
 // Define a getter for the created_at field
-thoughtSchema
-    .path('created_at')
-    .get(function (created_at) {
-        // Format the timestamp to a string representation
-        return created_at.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-    });
+// thoughtSchema
+//     .path('created_at')
+//     .get(function (created_at) {
+//         // Format the timestamp to a string representation
+//         return created_at.toLocaleDateString('en-US', {
+//             year: 'numeric',
+//             month: 'short',
+//             day: 'numeric'
+//         });
+//     });
 
 thoughtSchema
     .virtual('reactionCount')
@@ -97,13 +95,20 @@ thoughtSchema
 // Initialize the Thought model
 const Thought = model('Thought', thoughtSchema);
 
-Thought.create(
-    {
-        thoughtText: "Here's a cool thought...",
-        username: "zhihaoli",
-        userId: "5edff358a0fcb779aa7b118b"
-    },
-    (err) => (err ? handleError(err) : console.log('Created new document'))
-);
+// Thought.create(
+//     {
+//         thoughtText: "Here's a cool thought...",
+//         username: "zhihaoli",
+//         userId: "5edff358a0fcb779aa7b118b",
+//         reactions: [
+//             {
+//                 "reactionBody": "Here's a cool reaction...",
+//                 "username": "zhihaoli",
+//                 "userId": "5edff358a0fcb779aa7b118b"
+//             }
+//         ]
+//     },
+//     (err) => (err ? handleError(err) : console.log('Created new document'))
+// );
 
 module.exports = Thought;

@@ -58,14 +58,13 @@ userSchema
 // Initialize the User model
 const User = model('User', userSchema);
 
-// 
-User.create(
-  {
-    username: "johndoe",
-    email: "johndoe@gmail.com"
-  },
-  (err) => (err ? handleError(err) : console.log('Created new document'))
-);
+// User.create(
+//   {
+//     username: "johndoe",
+//     email: "johndoe@gmail.com"
+//   },
+//   (err) => (err ? handleError(err) : console.log('Created new document'))
+// );
 
 
 module.exports = User;

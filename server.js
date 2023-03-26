@@ -12,8 +12,6 @@ app.use(express.json());
 // app.use(routes);
 
 db.once('open', () => {
-  const reaction = db.collection('reactions');
-
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
   });
