@@ -1,7 +1,52 @@
-const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
+const { Schema, model, Types } = require('mongoose');
+const formatDate = require('../utils/formatDate');
 const handleError = (err) => console.error(err);
 
+// Create Reaction Schema
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId()
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            maxlength: 280
+        },
+        created_at: {
+            type: Date,
+            // set current date as the timestamp for the default value.
+            default: Date.now,
+            get: (timestamp) => { formatDate(timestamp) }
+        },
+        username: {
+            type: String,
+            required: true
+        }
+    },
+    {
+        toJSON: {
+            getters: true
+        },
+        id: false,
+    }
+);
+
+// Define a getter for the created_at field
+// reactionSchema
+//     .path('created_at')
+//     .get(function (created_at) {
+//         // Format the timestamp to a string representation
+//         return created_at.toLocaleDateString('en-US', {
+//             year: 'numeric',
+//             month: 'short',
+//             day: 'numeric'
+//         });
+//     });
+
+
+// Create thought Schema
 const thoughtSchema = new Schema(
     {
         thoughtText: {
