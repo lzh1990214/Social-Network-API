@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const handleError = (err) => console.error(err);
 
 // https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
 const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -16,12 +17,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      validate: {
-        validator: function (email) {
-          return emailRegex.test(email);
-        },
-        message: props => `${props.value} is not a valid email address! Please enter a valid email.`
-      }
+      match: emailRegex
+      // validate: {
+      //   validator: function (email) {
+      //     return emailRegex.test(email);
+      //   },
+      //   message: 'Please enter a valid email address.'
+      // }
     },
     thoughts: [
       {
@@ -41,21 +43,29 @@ const userSchema = new Schema(
     // Here we are indicating that we want virtuals to be included with our response, overriding the default behavior
     toJSON: {
       virtuals: true,
-    },
-    id: false,
+    }
   }
 );
 
-// Create a virtual property `fullName` that gets and sets the user's full name
+// Create a virtual property `fullName` that gets and sets the user's friend count
 userSchema
   .virtual('friendCount')
   // Get the length of the friends array
   .get(function () {
     return this.friends.length;
-  })
-  .set(this.friends.length);
+  });
 
-// Initialize our User model
+// Initialize the User model
 const User = model('User', userSchema);
+
+// 
+User.create(
+  {
+    username: "johndoe",
+    email: "johndoe@gmail.com"
+  },
+  (err) => (err ? handleError(err) : console.log('Created new document'))
+);
+
 
 module.exports = User;
