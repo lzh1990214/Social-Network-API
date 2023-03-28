@@ -18,7 +18,7 @@ const reactionSchema = new Schema(
             type: Date,
             // set current date as the timestamp for the default value.
             default: Date.now,
-            get: (timestamp) => formatDate(timestamp)
+            // get: (timestamp) => formatDate(timestamp)
         },
         username: {
             type: String,
@@ -35,12 +35,12 @@ const reactionSchema = new Schema(
 );
 
 // Define a getter for the created_at field
-// reactionSchema
-//     .path('created_at')
-//     .get(function (created_at) {
-//         // Format the timestamp to a string representation
-//         return formatDate(created_at);
-//     });
+reactionSchema
+    .path('created_at')
+    .get(function (created_at) {
+        // Format the timestamp to a string representation
+        return formatDate(created_at);
+    });
 
 
 // Create thought Schema
@@ -56,7 +56,7 @@ const thoughtSchema = new Schema(
             type: Date,
             // Format the timestamp to a string representation
             default: Date.now,
-            get: (timestamp) => formatDate(timestamp)
+            // get: (timestamp) => formatDate(timestamp)
         },
         username: {
             type: String,
@@ -75,16 +75,13 @@ const thoughtSchema = new Schema(
 );
 
 // Define a getter for the created_at field
-// thoughtSchema
-//     .path('created_at')
-//     .get(function (created_at) {
-//         // Format the timestamp to a string representation
-//         return created_at.toLocaleDateString('en-US', {
-//             year: 'numeric',
-//             month: 'short',
-//             day: 'numeric'
-//         });
-//     });
+thoughtSchema
+    .path('created_at')
+    .get(function (created_at) {
+        // Format the timestamp to a string representation
+        return formatDate(created_at);
+    });
+
 
 thoughtSchema
     .virtual('reactionCount')
