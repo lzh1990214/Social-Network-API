@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const handleError = (err) => console.error(err);
 
 // https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
 const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -57,14 +56,5 @@ userSchema
 
 // Initialize the User model
 const User = model('User', userSchema);
-
-// User.create(
-//   {
-//     username: "johndoe",
-//     email: "johndoe@gmail.com"
-//   },
-//   (err) => (err ? handleError(err) : console.log('Created new document'))
-// );
-
 
 module.exports = User;

@@ -31,7 +31,7 @@ const thoughtController = {
     // function to create a thought
     createThought(req, res) {
         Thought.create(req.body)
-            .then((dbThoughtData) => res.json(dbThoughtData))
+            // .then((dbThoughtData) => res.json(dbThoughtData))
             .then(({ _id }) => {
                 return User.findOneAndUpdate(
                     { _id: req.body.userId },
@@ -40,6 +40,7 @@ const thoughtController = {
                     { new: true }
                 )
             })
+            .then((dbThoughtData) => res.json(dbThoughtData))
             .catch((err) => res.status(500).json(err));
     },
 
@@ -74,7 +75,7 @@ const thoughtController = {
                     )
             )
             .then(() => {
-                res.json({ message: "Thought and related thoughts have been deleted!" });
+                res.json({ message: "Thought and related reactions have been deleted!" });
             })
             .catch((err) => res.status(500).json(err));
     },
@@ -100,7 +101,7 @@ const thoughtController = {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
             // "$pull" is a update operation that removes a reaction from the reactions array of the selected Thought document.
-            { $pull: { reactions: req.params.reactionId } },
+            { $pull: { reactions: { reactionId: req.params.reactionId } } },
             { new: true }
         )
             .then((dbThoughtData) =>

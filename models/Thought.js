@@ -1,6 +1,5 @@
 const { Schema, model, Types } = require('mongoose');
 const formatDate = require('../utils/formatDate');
-const handleError = (err) => console.error(err);
 
 // Create Reaction Schema
 const reactionSchema = new Schema(
@@ -18,7 +17,6 @@ const reactionSchema = new Schema(
             type: Date,
             // set current date as the timestamp for the default value.
             default: Date.now,
-            // get: (timestamp) => formatDate(timestamp)
         },
         username: {
             type: String,
@@ -37,10 +35,7 @@ const reactionSchema = new Schema(
 // Define a getter for the created_at field
 reactionSchema
     .path('created_at')
-    .get(function (created_at) {
-        // Format the timestamp to a string representation
-        return formatDate(created_at);
-    });
+    .get((created_at) => formatDate(created_at));
 
 
 // Create thought Schema
@@ -56,7 +51,6 @@ const thoughtSchema = new Schema(
             type: Date,
             // Format the timestamp to a string representation
             default: Date.now,
-            // get: (timestamp) => formatDate(timestamp)
         },
         username: {
             type: String,
@@ -77,10 +71,7 @@ const thoughtSchema = new Schema(
 // Define a getter for the created_at field
 thoughtSchema
     .path('created_at')
-    .get(function (created_at) {
-        // Format the timestamp to a string representation
-        return formatDate(created_at);
-    });
+    .get((created_at) => formatDate(created_at));
 
 
 thoughtSchema
@@ -91,21 +82,5 @@ thoughtSchema
 
 // Initialize the Thought model
 const Thought = model('Thought', thoughtSchema);
-
-// Thought.create(
-//     {
-//         thoughtText: "Here's a cool thought...",
-//         username: "zhihaoli",
-//         userId: "5edff358a0fcb779aa7b118b",
-//         reactions: [
-//             {
-//                 "reactionBody": "Here's a cool reaction...",
-//                 "username": "zhihaoli",
-//                 "userId": "5edff358a0fcb779aa7b118b"
-//             }
-//         ]
-//     },
-//     (err) => (err ? handleError(err) : console.log('Created new document'))
-// );
 
 module.exports = Thought;
